@@ -61,7 +61,7 @@ public class SeleniumScripts {
 
         driver.navigate().refresh();
         wait(3000);
-        assertEquals(driver.getTitle(), originalPageTitle, "Web page titles ae not equal after refresh");
+        assertEquals(driver.getTitle(), originalPageTitle, "Web page titles are not equal after refresh");
     }
 
     private void authorize() {
