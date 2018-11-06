@@ -5,6 +5,9 @@ import net.bndy.config.ConfigurationManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.testng.Assert.assertEquals;
 
 public class SeleniumScripts {
@@ -31,21 +34,33 @@ public class SeleniumScripts {
     public void checkDashboard() {
         authorize();
 
-        navigateToSubMenu("tab-AdminDashboard");
-        navigateToSubMenu("subtab-AdminParentOrders");
-        navigateToSubMenu("subtab-AdminCatalog");
+        final List<String> sections = Arrays.asList("Dashboard",
+                "Заказы",
+                "Каталог",
+                "Клиенты",
+                "Служба поддержки",
+                "Статистика",
+                "Modules",
+                "Design",
+                "Доставка",
+                "Способ оплаты",
+                "International",
+                "Shop Parameters",
+                "Конфигурация");
+
+        sections.forEach(this::navigateToSubMenu);
 
         driver.quit();
     }
 
-    private void navigateToSubMenu(final String elementId) {
-        driver.findElement(By.id(elementId)).click();
-        wait(2000);
+    private void navigateToSubMenu(final String elementText) {
+        driver.findElement(By.linkText(elementText)).click();
+        wait(3000);
         final String originalPageTitle = driver.getTitle();
         System.out.printf("Title of current page: %s\n", originalPageTitle);
 
         driver.navigate().refresh();
-        wait(2000);
+        wait(3000);
         assertEquals(driver.getTitle(), originalPageTitle, "Web page titles ae not equal after refresh");
     }
 
