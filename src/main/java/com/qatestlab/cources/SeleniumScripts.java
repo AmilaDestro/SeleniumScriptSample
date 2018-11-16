@@ -4,6 +4,10 @@ import com.qatestlab.cources.webdrivers.WebDriverContainer;
 import net.bndy.config.ConfigurationManager;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.util.Arrays;
 import java.util.List;
@@ -24,6 +28,9 @@ public class SeleniumScripts {
         driver = WebDriverContainer.getFirefoxDriver();
     }
 
+    /**
+     * Home task 2, part 1
+     */
     public void authorizeAndQuit() {
         authorize();
         logout();
@@ -31,6 +38,9 @@ public class SeleniumScripts {
         wait(1500);
     }
 
+    /**
+     * Home task 2, part 2
+     */
     public void checkDashboard() {
         authorize();
 
@@ -50,6 +60,37 @@ public class SeleniumScripts {
 
         sections.forEach(this::navigateToSubMenu);
 
+        driver.quit();
+    }
+
+    /**
+     * Home task 3
+     */
+    public void goToCategories() {
+        authorize();
+
+        final WebElement catalog = driver.findElement(By.cssSelector("#subtab-AdminCatalog"));
+
+        final Actions actions = new Actions(driver);
+        actions.moveToElement(catalog).build().perform();
+
+        WebDriverWait wait = new WebDriverWait(driver, 3);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(text(),'категории')]"))).click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".process-icon-new"))).click();
+
+        final String myCategoryName = "test_northel";
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//h2[contains(text(),'Добавить')]")))
+                .findElement(By.xpath("//input[@id='name_1']"))
+                .sendKeys(myCategoryName);
+        driver.findElement(By.cssSelector("#category_form_submit_btn")).click();
+
+//        wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.cssSelector(".alert alert-success"))))
+//            .findElement(By.xpath("//input[@name='categoryFilter_name']"))
+//                .sendKeys(myCategoryName);
+//        driver.findElement(By.cssSelector("#submitFilterButtoncategory")).click();
+//        wait.until(
+//                ExpectedConditions.presenceOfElementLocated(By.xpath(String.format("//td[contains(text(),'%s')]",
+//                                                                                    myCategoryName))));
         driver.quit();
     }
 
