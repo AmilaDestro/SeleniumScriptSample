@@ -66,7 +66,7 @@ public class SeleniumScripts {
     /**
      * Home task 3
      */
-    public void goToCategories() {
+    public void goToCategoriesAndCreateNewOne() {
         authorize();
 
         final WebElement catalog = driver.findElement(By.cssSelector("#subtab-AdminCatalog"));
@@ -74,23 +74,39 @@ public class SeleniumScripts {
         final Actions actions = new Actions(driver);
         actions.moveToElement(catalog).build().perform();
 
-        WebDriverWait wait = new WebDriverWait(driver, 3);
+        final WebDriverWait wait = new WebDriverWait(driver, 5);
         wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//a[contains(text(),'категории')]"))).click();
         wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector(".process-icon-new"))).click();
 
-        final String myCategoryName = "test_northel";
+        final String newCategoryName = "test_northel";
         wait.until(ExpectedConditions.presenceOfElementLocated(By.xpath("//h2[contains(text(),'Добавить')]")))
                 .findElement(By.xpath("//input[@id='name_1']"))
-                .sendKeys(myCategoryName);
+                .sendKeys(newCategoryName);
         driver.findElement(By.cssSelector("#category_form_submit_btn")).click();
 
-//        wait.until(ExpectedConditions.visibilityOf(driver.findElement(By.cssSelector(".alert alert-success"))))
-//            .findElement(By.xpath("//input[@name='categoryFilter_name']"))
-//                .sendKeys(myCategoryName);
-//        driver.findElement(By.cssSelector("#submitFilterButtoncategory")).click();
-//        wait.until(
-//                ExpectedConditions.presenceOfElementLocated(By.xpath(String.format("//td[contains(text(),'%s')]",
-//                                                                                    myCategoryName))));
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("div[class~='alert-success']")))
+            .findElement(By.xpath("//input[@name='categoryFilter_name']"))
+                .sendKeys(newCategoryName);
+        driver.findElement(By.cssSelector("#submitFilterButtoncategory")).click();
+        wait.until(
+                ExpectedConditions.presenceOfElementLocated(By.xpath(String.format("//td[contains(text(),'%s')]",
+                                                                                    newCategoryName))));
+
+        // clearing test data
+        driver.findElement(By.xpath("//input[@name='categoryBox[]']")).click();
+        driver.findElements(By.cssSelector("button[class~='dropdown-toggle']"))
+                .stream()
+                .filter(element -> element.getText()
+                        .equals("Групповые действия"))
+                .findFirst()
+                .get()
+                .click();
+        driver.findElement(By.linkText("Удалить выбранное")).click();
+        wait.until(ExpectedConditions.alertIsPresent()).accept();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("#deleteMode_delete"))).click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("i[class~='icon-trash']"))).click();
+        wait.until(ExpectedConditions.presenceOfElementLocated(By.cssSelector("div[class~='alert-success']"))).click();
+
         driver.quit();
     }
 
