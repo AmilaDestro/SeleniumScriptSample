@@ -1,0 +1,9 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+
+<suite name="HomeTask4" verbose="1" parallel="false">
+    <test name="Products" >
+        <classes>
+            <class name="com.qatestlab.cources.SeleniumScripts"/>
+        </classes>
+    </test>
+</suite>
