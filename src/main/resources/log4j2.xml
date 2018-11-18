@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<Configuration status="info">
+    <Appenders>
+        <Console name="STDOUT" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level  %c{1.} - %msg%n %throwable{short}"/>
+        </Console>
+    </Appenders>
+
+    <Loggers>
+        <Logger name="com.qatestlab.cources" level="debug" />
+        <!--Set log lever for discovery service -->
+        <Root level="info">
+            <AppenderRef ref="STDOUT" />
+        </Root>
+    </Loggers>
+</Configuration>
